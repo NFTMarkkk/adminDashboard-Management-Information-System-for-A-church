@@ -371,26 +371,7 @@
         .staff-role {
             color: #666;
             font-size: 14px;
-            margin-bottom: 10px;
-        }
-
-        .staff-availability {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
             margin-bottom: 15px;
-        }
-
-        .available {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .busy {
-            background: #f8d7da;
-            color: #721c24;
         }
 
         .staff-actions {
@@ -772,16 +753,10 @@
                     <select id="eventType" required>
                         <option value="">Select Event Type</option>
                         <option value="Wedding">Wedding</option>
-                        <option value="Funeral">Funeral</option>
                         <option value="Baptism">Baptism</option>
-                        <option value="Communion">Communion</option>
-                        <option value="Confirmation">Confirmation</option>
-                        <option value="Mass">Mass</option>
-                        <option value="Prayer Meeting">Prayer Meeting</option>
-                        <option value="Bible Study">Bible Study</option>
-                        <option value="Youth Fellowship">Youth Fellowship</option>
-                        <option value="Thanksgiving Mass">Thanksgiving Mass</option>
-                        <option value="Other">Other</option>
+                        <option value="Funeral">Funeral</option>
+                        <option value="House Blessing">House Blessing</option>
+                        <option value="Ordination">Ordination</option>
                     </select>
                 </div>
                 <div class="form-row">
@@ -794,29 +769,19 @@
                         <input type="time" id="eventTime" required>
                     </div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Duration (hours):</label>
-                        <select id="eventDuration">
-                            <option value="0.5">30 minutes</option>
-                            <option value="1">1 hour</option>
-                            <option value="1.5">1.5 hours</option>
-                            <option value="2" selected>2 hours</option>
-                            <option value="2.5">2.5 hours</option>
-                            <option value="3">3 hours</option>
-                            <option value="4">4 hours</option>
-                            <option value="6">6 hours</option>
-                            <option value="8">8 hours</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Priority:</label>
-                        <select id="eventPriority">
-                            <option value="normal" selected>Normal</option>
-                            <option value="high">High</option>
-                            <option value="urgent">Urgent</option>
-                        </select>
-                    </div>
+                <div class="form-group">
+                    <label>Duration (hours):</label>
+                    <select id="eventDuration">
+                        <option value="0.5">30 minutes</option>
+                        <option value="1">1 hour</option>
+                        <option value="1.5">1.5 hours</option>
+                        <option value="2" selected>2 hours</option>
+                        <option value="2.5">2.5 hours</option>
+                        <option value="3">3 hours</option>
+                        <option value="4">4 hours</option>
+                        <option value="6">6 hours</option>
+                        <option value="8">8 hours</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label class="required">Requested By:</label>
@@ -883,17 +848,11 @@
                     <label class="required">Role/Position:</label>
                     <select id="staffRole" required>
                         <option value="">Select Role</option>
-                        <option value="Priest">Priest</option>
-                        <option value="Assistant Priest">Assistant Priest</option>
+                        <option value="Parish Priest">Parish Priest</option>
+                        <option value="Associate Priest">Associate Priest</option>
                         <option value="Deacon">Deacon</option>
-                        <option value="Parish Secretary">Parish Secretary</option>
-                        <option value="Youth Minister">Youth Minister</option>
-                        <option value="Music Director">Music Director</option>
-                        <option value="Choir Member">Choir Member</option>
-                        <option value="Altar Server">Altar Server</option>
-                        <option value="Usher">Usher</option>
-                        <option value="Volunteer">Volunteer</option>
-                        <option value="Other">Other</option>
+                        <option value="Sacristan">Sacristan</option>
+                        <option value="Lector">Lector</option>
                     </select>
                 </div>
                 <div class="form-row">
@@ -904,27 +863,6 @@
                     <div class="form-group">
                         <label>Phone:</label>
                         <input type="tel" id="staffPhone" placeholder="+63 XXX XXX XXXX">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Availability:</label>
-                        <select id="staffAvailability">
-                            <option value="available" selected>Available</option>
-                            <option value="busy">Busy</option>
-                            <option value="on-leave">On Leave</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Department:</label>
-                        <select id="staffDepartment">
-                            <option value="liturgy">Liturgy</option>
-                            <option value="music">Music</option>
-                            <option value="youth">Youth Ministry</option>
-                            <option value="administration">Administration</option>
-                            <option value="maintenance">Maintenance</option>
-                            <option value="other">Other</option>
-                        </select>
                     </div>
                 </div>
                 <div class="form-group">
@@ -1250,9 +1188,6 @@
                     </div>
                     <div class="staff-name">${member.name || 'N/A'}</div>
                     <div class="staff-role">${member.role || 'N/A'}</div>
-                    <div class="staff-availability ${member.availability === 'available' ? 'available' : 'busy'}">
-                        ${member.availability || 'Available'}
-                    </div>
                     <div class="staff-actions">
                         <button class="btn-small btn-delete" onclick="deleteStaff('${member.id}')">Delete</button>
                     </div>
@@ -1264,7 +1199,7 @@
         function updateDashboardStats() {
             const totalEvents = events.length;
             const pendingEvents = events.filter(e => e.status === 'pending' || !e.status).length;
-            const activeStaff = staff.filter(s => s.availability === 'available' || !s.availability).length;
+            const activeStaff = staff.length;
 
             document.getElementById('totalEvents').textContent = totalEvents;
             document.getElementById('pendingEvents').textContent = pendingEvents;
@@ -1540,7 +1475,6 @@
                 date: document.getElementById('eventDate').value,
                 time: document.getElementById('eventTime').value,
                 duration: parseFloat(document.getElementById('eventDuration').value),
-                priority: document.getElementById('eventPriority').value,
                 requestedBy: document.getElementById('requestedBy').value,
                 contactInfo: document.getElementById('contactInfo').value,
                 description: document.getElementById('eventDescription').value,
@@ -1572,8 +1506,6 @@
                 role: document.getElementById('staffRole').value,
                 email: document.getElementById('staffEmail').value,
                 phone: document.getElementById('staffPhone').value,
-                availability: document.getElementById('staffAvailability').value,
-                department: document.getElementById('staffDepartment').value,
                 notes: document.getElementById('staffNotes').value,
                 createdAt: new Date().toISOString()
             };
